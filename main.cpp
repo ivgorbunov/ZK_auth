@@ -1,8 +1,10 @@
 #include <iostream>
 
-#include <verificator.hpp>
-#include "fair_prover.hpp"
+#include "src/channel.hpp"
+#include "src/fair_prover.hpp"
+
 
 signed main() {
-
+    FairProver fp(3);
+    std::cout << try_connect(&fp);
 }

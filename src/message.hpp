@@ -1,4 +1,6 @@
-#include <util/bigint.hpp>
+#pragma once
+
+#include <src/util/moduled_bigint.hpp>
 #include <variant>
 
 enum class Respond {
@@ -10,6 +12,6 @@ enum class Respond {
 
 struct Message {
     size_t iter;
-    std::vector<BigInteger> arr;
+    std::vector<ModuledBigInt> arr;
     Respond resp;
 };
