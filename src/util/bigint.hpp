@@ -54,11 +54,12 @@ namespace FFT {
             int lg = 0;
             {
                 auto copy = n;
-                while (copy != 0) {
+                while (copy > 1) {
                     lg++;
                     copy /= 2;
                 }
             }
+            //__lg(n)
             reversed_mask.resize(n);
             for (int mask = 1; mask < n; mask++)
                 reversed_mask[mask] = (reversed_mask[mask >> 1] >> 1) + ((mask & 1) << (lg - 1));
@@ -72,9 +73,13 @@ namespace FFT {
                     roots[len + i] = complex<float_t>(cosl(PI * i / len), sinl(PI * i / len));
         }
 
-        for (int i = 0; i < n; i++)
+
+        auto cp = reversed_mask;
+        for (int i = 0; i < n; i++) {
             if (i < reversed_mask[i])
+
                 std::swap(a[i], a[reversed_mask[i]]);
+        }
 
         for (int len = 1; len < n; len <<= 1)
             for (int i = 0; i < n; i += (len << 1))

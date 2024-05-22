@@ -13,7 +13,6 @@ public:
         last_query.resize(k);
         for (size_t i = 0; i < k; i++) {
             public_key[i] = message.arr[i];
-            std::cout << public_key[i].value << " ";
         }
         std::cout << "V: Public key received\n";
     }

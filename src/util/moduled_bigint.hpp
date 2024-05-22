@@ -6,7 +6,8 @@
 struct ModuledBigInt {
     ModuledBigInt() = default;
 
-    ModuledBigInt(const BigInteger& value): value(value) {}
+    ModuledBigInt(const BigInteger& value): value((value % N + N) % N) {
+    }
     std::strong_ordering operator<=>(const ModuledBigInt& other) const = default;
     ModuledBigInt operator*=(const ModuledBigInt& other) {
         *this = ModuledBigInt{(value * other.value) % N};
