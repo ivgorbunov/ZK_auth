@@ -46,7 +46,9 @@ pair<BigInteger, BigInteger> gcd_extended(BigInteger a, BigInteger b) {
         return make_pair(1, 0);
     }
     auto [quotient, remainder] = BigInteger::divide(a, b);
+    cerr << a << ' ' << b << ' ' << quotient << ' ' << remainder << '\n';
     auto [x1, y1] = gcd_extended(b, remainder);
+    //cerr << a << '*' << y1 << " + " << b << '*' << (x1 - quotient * y1) << '\n';
     return make_pair(y1, x1 - quotient * y1);
 }
 

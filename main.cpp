@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "src/channel.hpp"
 #include "src/fair_prover.hpp"
