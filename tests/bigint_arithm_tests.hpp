@@ -478,12 +478,12 @@ TEST(BigIntOperatorTests, UnaryMinus) {
 }
 
 /*
-TEST(BigIntMethodsTests, Power) {
+TEST(BigIntMethodTests, Power) {
     BigInteger a = BigInteger::power(2, 6);
     ASSERT_EQ(a, 64);
 }
 
-TEST(BigIntMethodsTests, PowerZero) {
+TEST(BigIntMethodTests, PowerZero) {
     BigInteger a = BigInteger::power(2, 0);
     ASSERT_EQ(1, a);
 }
@@ -493,27 +493,27 @@ TEST(BigIntMethodTests, PowerBig) {
     ASSERT_EQ(65536, a);
 }
 
-TEST(BigIntMethodsTests, PowerOne) {
+TEST(BigIntMethodTests, PowerOne) {
     BigInteger a = BigInteger::power(1, 1791791791);
     ASSERT_EQ(1, a);
 }
 
-TEST(BigIntMethodsTests, NegPower) {
+TEST(BigIntMethodTests, NegPower) {
     BigInteger a = BigInteger::power(-2, 5);
     ASSERT_EQ(-32, a);
 }
 
-TEST(BigIntMethodsTests, NegEvenPower) {
+TEST(BigIntMethodTests, NegEvenPower) {
     BigInteger a = BigInteger::power(-2, 8);
     ASSERT_EQ(256, a);
 }
 
-TEST(BigIntMethodsTests, ZeroPower) {
+TEST(BigIntMethodTests, ZeroPower) {
     BigInteger a = BigInteger::power(0, 1791791791);
     ASSERT_EQ(0, a);
 }
 
-TEST(BigIntMethodsTests, PowerTime) {
+TEST(BigIntMethodTests, PowerTime) {
     int time_treshold = 2500;
     int total_time = 0;
 
@@ -528,114 +528,135 @@ TEST(BigIntMethodsTests, PowerTime) {
     }
 }
 
-TEST(BigIntMethodsTests, Size) {
+TEST(BigIntMethodTests, Size) {
     BigInteger a = 179;
 
     ASSERT_EQ(3, a.size());
 }
 
-TEST(BigIntMethodsTests, SizeNegative) {
+TEST(BigIntMethodTests, SizeNegative) {
     BigInteger a = -19;
     ASSERT_EQ(2, a.size());
 }
 
-TEST(BigIntMethodsTests, SizeBig) {
+TEST(BigIntMethodTests, SizeBig) {
     BigInteger a = random_bigint(100'000);
     ASSERT_EQ(100'000, a.size());
 }
 
-TEST(BigIntMethodsTests, SizeZero) {
+TEST(BigIntMethodTests, SizeZero) {
     BigInteger a = 0;
     ASSERT_EQ(1, a.size());
 }*/
 
-TEST(BigIntMethodsTests, IsZeroPositive) {
+TEST(BigIntMethodTests, IsZeroPositive) {
     BigInteger a = 179;
     ASSERT_FALSE(a.is_zero());
 }
 
-TEST(BigIntMethodsTests, IsZeroNegative) {
+TEST(BigIntMethodTests, IsZeroNegative) {
     BigInteger a = -179;
     ASSERT_FALSE(a.is_zero());
 }
 
-TEST(BigIntMethodsTests, IsZeroZero) {
+TEST(BigIntMethodTests, IsZeroZero) {
     BigInteger a = 0;
     ASSERT_TRUE(a.is_zero());
 }
 
-TEST(BigIntMethodsTests, IsZeroTen) {
+TEST(BigIntMethodTests, IsZeroTen) {
     BigInteger a = 10;
     ASSERT_FALSE(a.is_zero());
 }
 
-TEST(BigIntMethodsTests, IsNegativePositive) {
+TEST(BigIntMethodTests, IsNegativePositive) {
     BigInteger a = 179;
     ASSERT_FALSE(a.is_negative());
 }
 
-TEST(BigIntMethodsTests, IsNegativeZero) {
+TEST(BigIntMethodTests, IsNegativeZero) {
     BigInteger a = 0;
     ASSERT_FALSE(a.is_negative());
 }
 
-TEST(BigIntMethodsTests, IsNegativeNegative) {
+TEST(BigIntMethodTests, IsNegativeNegative) {
     BigInteger a = -1;
     ASSERT_TRUE(a.is_negative());
 }
 
-TEST(BigIntMethodsTests, IsNegativeAfterSum) {
+TEST(BigIntMethodTests, IsNegativeAfterSum) {
     BigInteger a = -11;
     a += 11;
     ASSERT_FALSE(a.is_negative());
 }
 
+TEST(BigIntOperatorTests, OperatorsToItself) {
+    for (int i = 0; i < 20; ++i) {
+        BigInteger x = random_bigint(100 + i);
+        BigInteger a = x;
+        a += a;
+        ASSERT_EQ(a, x + x);
+        a = x;
+        a -= a;
+        ASSERT_EQ(a, 0);
+        a = x;
+        a *= a;
+        ASSERT_EQ(a, x * x);
+        a = x;
+        a /= a;
+        ASSERT_EQ(a, 1);
+        a = x;
+        a %= a;
+        ASSERT_EQ(a, 0);
+    }
+}
+
 /*
-TEST(BigIntMethodsTests, InvertSignPositive) {
+TEST(BigIntMethodTests, InvertSignPositive) {
     BigInteger a = 179;
     a.invert_sign();
     ASSERT_EQ(-179, a);
 }
 
-TEST(BigIntMethodsTests, InvertSignNegative) {
+TEST(BigIntMethodTests, InvertSignNegative) {
     BigInteger a = -179;
     a.invert_sign();
     ASSERT_EQ(179, a);
 }
 
-TEST(BigIntMethodsTests, InvertSignZero) {
+TEST(BigIntMethodTests, InvertSignZero) {
     BigInteger a = 0;
     a.invert_sign();
     ASSERT_EQ(0, a);
     ASSERT_FALSE(a.is_negative());
 }
 
-TEST(BigIntMethodsTests, Shift) {
+TEST(BigIntMethodTests, Shift) {
     BigInteger a = 179;
     a.shift(1);
     ASSERT_EQ(1790, a);
 }
 
-TEST(BigIntMethodsTests, ShiftZero) {
+TEST(BigIntMethodTests, ShiftZero) {
     BigInteger a = 179;
     a.shift(0);
     ASSERT_EQ(179, a);
 }
 
-TEST(BigIntMethodsTests, ShiftNegative) {
+TEST(BigIntMethodTests, ShiftNegative) {
     BigInteger a = -179;
     a.shift(2);
     ASSERT_EQ(-17900, a);
 }
 
-TEST(BigIntMethodsTests, ShiftZeroValue) {
+TEST(BigIntMethodTests, ShiftZeroValue) {
     BigInteger a = 0;
     a.shift(30);
     ASSERT_EQ(0, a);
     ASSERT_EQ("0", a.toString());
 }
 
-TEST(BigIntMethodsTests, ShiftTime) {
+TEST(BigIntMethodTests, ShiftTime) {
     int total_time = 0;
     int time_treshold = 1000;
     for (size_t i = 0; i < 100; ++i) {
@@ -649,3 +670,40 @@ TEST(BigIntMethodsTests, ShiftTime) {
     }
 }
 */
+
+TEST(BigIntMethodTests, ToBinaryTest) {
+    for (int small = 0; small <= 1024; ++small) {
+        int copy = small;
+        vector<bool> should;
+        while (copy) {
+            should.emplace_back(copy & 1);
+            copy >>= 1;
+        }
+        ASSERT_EQ(should, BigInteger(small).to_binary());
+    }
+    for (int i = 0; i < 100; ++i) {
+        long long cur = random_value();
+        long long copy = abs(cur);
+        vector<bool> should;
+        while (copy) {
+            should.emplace_back(copy & 1ll);
+            copy >>= 1;
+        }
+        ASSERT_EQ(should, BigInteger(cur).to_binary());
+    }
+    for (int i = 0; i < 20; ++i) {
+        int len = 179 + i * 57;
+        vector<bool> should(len);
+        for (int j = 0; j < len; ++j)
+            should[j] = random_value() % 2;
+        should.emplace_back(1);
+        BigInteger value = 0;
+        for (int j = 0; j <= len; ++j) {
+            value *= 2;
+            value += int(should[len - j]);
+        }
+        auto ans = value.to_binary();
+        ASSERT_EQ(value.to_binary(), should);
+    }
+}
+

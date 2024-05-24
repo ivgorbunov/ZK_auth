@@ -434,3 +434,74 @@ BigInteger& BigInteger::operator%=(const BigInteger& other) {
 BigInteger operator-(const BigInteger& a) {
   return BigInteger(a.digit_groups, !a.positive);
 }
+
+std::vector<bool> BigInteger::ll_to_binary(long long x) {
+  std::vector<bool> ans;
+  while (x) {
+    ans.emplace_back(x & 1ll);
+    x >>= 1;
+  }
+  return ans;
+}
+
+void BigInteger::binary_add_to(std::vector<bool>& a,
+                               const std::vector<bool>& b) {
+  int carry = 0;
+  a.resize(max(a.size(), b.size()));
+  size_t i = 0;
+  while (i < a.size() && (i < b.size() || carry)) {
+    int cur = carry + static_cast<int>(a[i]) +
+              (i < b.size() ? static_cast<int>(b[i]) : 0);
+    a[i] = cur & 1;
+    carry = cur >> 1;
+    ++i;
+  }
+  if (i == a.size() && carry) {
+    a.emplace_back(true);
+  }
+}
+
+void BigInteger::binary_mul_to(std::vector<bool>& a,
+                               const std::vector<bool>& b) {
+  std::vector<long long> result_poly =
+      FFT::multiply_poly<long long>(a.begin(), a.end(), b.begin(), b.end());
+  for (size_t i = 0; i < result_poly.size(); ++i) {
+    if (result_poly[i] > 1) {
+      long long extra = result_poly[i] >> 1;
+      result_poly[i] &= 1ll;
+      if (i + 1 == result_poly.size()) {
+        result_poly.emplace_back();
+      }
+      result_poly[i + 1] += extra;
+    }
+  }
+  a.resize(result_poly.size());
+  for (size_t i = 0; i < result_poly.size(); ++i) {
+    a[i] = result_poly[i];
+  }
+}
+
+std::vector<bool> BigInteger::to_binary() const {
+  if (digit_groups.empty()) {
+    return {};
+  }
+  size_t N = digit_groups.size();
+  std::vector<std::vector<bool>> result(N);
+  for (size_t i = 0; i < N; ++i) {
+    result[i] = ll_to_binary(digit_groups[i]);
+  }
+  std::vector<bool> base_power = ll_to_binary(BASE);
+  size_t step = 1;
+  while (step < N) {
+    for (size_t i = 0; i + step < N; i += 2 * step) {
+      size_t next = i + step;
+      binary_mul_to(result[next], base_power);
+      binary_add_to(result[next], result[i]);
+      std::swap(result[next], result[i]);
+      result[next].clear();
+    }
+    step *= 2;
+    binary_mul_to(base_power, base_power);
+  }
+  return result[0];
+}

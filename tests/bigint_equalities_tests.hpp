@@ -2,28 +2,28 @@
 
 #include "bigint_test_helper.hpp"
 
-TEST(BiOperatorTests, EqTrue) {
+TEST(BigIntOperatorTests, EqTrue) {
     BigInteger a = 179;
     BigInteger b = 179;
 
     ASSERT_TRUE(a == b);
 }
 
-TEST(BiOperatorTests, EqFalse) {
+TEST(BigIntOperatorTests, EqFalse) {
     BigInteger a = 179;
     BigInteger b = 57;
 
     ASSERT_FALSE(a == b);
 }
 
-TEST(BiOperatorTests, EqSignedNeq) {
+TEST(BigIntOperatorTests, EqSignedNeq) {
     BigInteger a = 179;
     BigInteger b = -179;
 
     ASSERT_FALSE(a == b);
 }
 
-TEST(BiOperatorTests, EqTime) {
+TEST(BigIntOperatorTests, EqTime) {
     std::vector<BigInteger> testCases;
     for (int i = 0; i < 179; ++i) {
         testCases.push_back(random_bigint(1000));
@@ -43,11 +43,11 @@ TEST(BiOperatorTests, EqTime) {
     }
 }
 
-TEST(BiOperatorTests, EqMemory) {
+TEST(BigIntOperatorTests, EqMemory) {
     CHECK_OPERATOR_ALLOCATIONS(==, 0);
 }
 
-TEST(BiOperatorTests, NeqRandom) {
+TEST(BigIntOperatorTests, NeqRandom) {
     for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
         BigInteger first = random_bigint(1000);
         BigInteger second = random_bigint(1000);
@@ -55,11 +55,11 @@ TEST(BiOperatorTests, NeqRandom) {
     }
 }
 
-TEST(BiOperatorTests, NeqMemory) {
+TEST(BigIntOperatorTests, NeqMemory) {
     CHECK_OPERATOR_ALLOCATIONS(!=, 0);
 }
 
-TEST(BiOperatorTests, SpaceshipG) {
+TEST(BigIntOperatorTests, SpaceshipG) {
     BigInteger a = 179;
     BigInteger b = 57;
 
@@ -67,56 +67,56 @@ TEST(BiOperatorTests, SpaceshipG) {
     ASSERT_EQ(std::strong_ordering::greater, cmp);
 }
 
-TEST(BiOperatorTests, SpaceshipL) {
+TEST(BigIntOperatorTests, SpaceshipL) {
     BigInteger a = 57;
     BigInteger b = 179;
 
     ASSERT_EQ(std::strong_ordering::less, a <=> b);
 }
 
-TEST(BiOperatorTests, SpacesipEq) {
+TEST(BigIntOperatorTests, SpacesipEq) {
     BigInteger a = 179;
     BigInteger b = 179;
 
     ASSERT_EQ(std::strong_ordering::equivalent, a <=> b);
 }
 
-TEST(BiOperatorTests, SpaceshipGNeg) {
+TEST(BigIntOperatorTests, SpaceshipGNeg) {
     BigInteger a = 57;
     BigInteger b = -179;
 
     ASSERT_EQ(std::strong_ordering::greater, a <=> b);
 }
 
-TEST(BiOperatorTests, SpaceshipLNeg) {
+TEST(BigIntOperatorTests, SpaceshipLNeg) {
     BigInteger a = -179;
     BigInteger b = 57;
 
     ASSERT_EQ(std::strong_ordering::less, a <=> b);
 }
 
-TEST(BiOperatorTests, SpaceshipTwoNeg) {
+TEST(BigIntOperatorTests, SpaceshipTwoNeg) {
     BigInteger a = -179;
     BigInteger b = -57;
 
     ASSERT_EQ(std::strong_ordering::less, a <=> b);
 }
 
-TEST(BiOperatorTests, SpaceshipTwoNegEq) {
+TEST(BigIntOperatorTests, SpaceshipTwoNegEq) {
     BigInteger a = -179;
     BigInteger b = -179;
 
     ASSERT_EQ(std::strong_ordering::equivalent, a <=> b);
 }
 
-TEST(BiOperatorTests, SpaceshipSign) {
+TEST(BigIntOperatorTests, SpaceshipSign) {
     BigInteger a = 179;
     BigInteger b = -179;
 
     ASSERT_EQ(std::strong_ordering::greater, a <=> b);
 }
 
-TEST(BiOperatorTests, SpaceshipTime) {
+TEST(BigIntOperatorTests, SpaceshipTime) {
     int total_time = 0;
     int time_treshold = 1000000;
     for (int i = 0; i < 1000; ++i) {
@@ -132,22 +132,22 @@ TEST(BiOperatorTests, SpaceshipTime) {
     }
 }
 
-TEST(BiOperatorTests, SpaceshipMemory) {
+TEST(BigIntOperatorTests, SpaceshipMemory) {
     CHECK_OPERATOR_ALLOCATIONS(<=>, 0);
 }
 
-TEST(BiOperatorTests, Le) {
+TEST(BigIntOperatorTests, Le) {
     CHECK_AGREED_WITH_INT(<);
 }
 
-TEST(BiOperatorTests, Leq) {
+TEST(BigIntOperatorTests, Leq) {
     CHECK_AGREED_WITH_INT(<=);
 }
 
-TEST(BiOperatorTests, Ge) {
+TEST(BigIntOperatorTests, Ge) {
     CHECK_AGREED_WITH_INT(>);
 }
 
-TEST(BiOperatorTests, Geq) {
+TEST(BigIntOperatorTests, Geq) {
     CHECK_AGREED_WITH_INT(>=);
 }

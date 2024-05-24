@@ -59,6 +59,10 @@ class BigInteger {
 
   friend BigInteger abs(const BigInteger&);
 
+  // binary representation of absolute value
+  // from least significant to most significant
+  std::vector<bool> to_binary() const;
+
  private:
   void fix_zero_digits();
   static std::strong_ordering compare_digit_groups(
@@ -69,11 +73,16 @@ class BigInteger {
   void add_one_with_sign(bool);
   BigInteger shift_left(size_t) const;
   BigInteger shift_right(size_t) const;
+  
   static std::pair<BigInteger, BigInteger> divide32(const BigInteger&,
                                                     const BigInteger&, size_t);
   static std::pair<BigInteger, BigInteger> divide21(const BigInteger&,
                                                     const BigInteger&, size_t);
   static const size_t SMALLDIVIDEDIGITS = 3;
+
+  static std::vector<bool> ll_to_binary(long long);
+  static void binary_mul_to(std::vector<bool>&, const std::vector<bool>&);
+  static void binary_add_to(std::vector<bool>&, const std::vector<bool>&);
 
   static const long long BASE = 100'000;
   static const size_t BASELEN = 5;
