@@ -27,7 +27,6 @@ TEST(BigIntOperatorTests, MultMemory) {
     CHECK_OPERATOR_ALLOCATIONS(*, 3);
 }
 
-
 TEST(BigIntOperatorTests, DivRandom) {
     TEST_SAME_OPERATOR(/, /=);
 }
@@ -37,7 +36,7 @@ TEST(BigIntOperatorTests, DivMultRandom) {
         BigInteger first = random_bigint(100);
         BigInteger second = random_bigint(50);
         auto [quot, rem] = BigInteger::divide(first, second);
-        ASSERT_TRUE(0 <= rem);
+        ASSERT_TRUE(BigInteger(0) <= rem);
         ASSERT_TRUE(rem < second);
         ASSERT_EQ(first, quot * second + rem);
     }
@@ -461,6 +460,23 @@ TEST(BigIntOperatorTests, RMMinusMemory) {
     ASSERT_LE(cntr.get_counter(), 1);
 }
 
+TEST(BigIntOperatorTests, UnaryMinus) {
+    for (int i = -25; i < 25; ++i) {
+        BigInteger a(i);
+        BigInteger b = -a;
+        ASSERT_EQ(b, -i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        BigInteger a = random_bigint(100);
+        BigInteger b = -a;
+        BigInteger c = -b;
+        BigInteger d = -c;
+        ASSERT_EQ(a, c);
+        ASSERT_EQ(b, d);
+        ASSERT_EQ(a + b, 0);
+    }
+}
+
 /*
 TEST(BigIntMethodsTests, Power) {
     BigInteger a = BigInteger::power(2, 6);
@@ -531,7 +547,7 @@ TEST(BigIntMethodsTests, SizeBig) {
 TEST(BigIntMethodsTests, SizeZero) {
     BigInteger a = 0;
     ASSERT_EQ(1, a.size());
-}
+}*/
 
 TEST(BigIntMethodsTests, IsZeroPositive) {
     BigInteger a = 179;
@@ -574,6 +590,7 @@ TEST(BigIntMethodsTests, IsNegativeAfterSum) {
     ASSERT_FALSE(a.is_negative());
 }
 
+/*
 TEST(BigIntMethodsTests, InvertSignPositive) {
     BigInteger a = 179;
     a.invert_sign();

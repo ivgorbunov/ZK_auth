@@ -1,58 +1,46 @@
 #pragma once
 
+#include <compare>
+
 #include "bigint.hpp"
-#include "N.hpp"
 
-struct ModuledBigInt {
-    ModuledBigInt() = default;
+class ModuledBigInt {
+ public:
+  static BigInteger N;
 
-    ModuledBigInt(const BigInteger& value): value((value % N + N) % N) {
-    }
-    std::strong_ordering operator<=>(const ModuledBigInt& other) const = default;
-    ModuledBigInt operator*=(const ModuledBigInt& other) {
-        *this = ModuledBigInt{(value * other.value) % N};
-        return *this;
-    }
+  ModuledBigInt();
+  ModuledBigInt(long long);
+  ModuledBigInt(const BigInteger&);
+  ModuledBigInt(BigInteger&&);
+  ModuledBigInt(const ModuledBigInt&) = default;
+  ModuledBigInt(ModuledBigInt&&) = default;
 
-    ModuledBigInt operator-() {
-        return ModuledBigInt{(N-value) % N};
-    }
-    BigInteger value;
+  ModuledBigInt& operator=(const ModuledBigInt&) = default;
+  ModuledBigInt& operator=(ModuledBigInt&&) = default;
+
+  std::strong_ordering operator<=>(const ModuledBigInt&) const;
+  bool operator==(const ModuledBigInt&) const = default;
+  bool operator!=(const ModuledBigInt&) const = default;
+
+  ModuledBigInt& operator+=(const ModuledBigInt&);
+  ModuledBigInt& operator-=(const ModuledBigInt&);
+  ModuledBigInt& operator*=(const ModuledBigInt&);
+
+  friend ModuledBigInt operator+(const ModuledBigInt&, const ModuledBigInt&);
+  friend ModuledBigInt operator-(const ModuledBigInt&, const ModuledBigInt&);
+  friend ModuledBigInt operator*(const ModuledBigInt&, const ModuledBigInt&);
+  friend ModuledBigInt operator-(const ModuledBigInt&);
+
+  // returns 0 if there is no inverse
+  // when value and N are coprime
+  ModuledBigInt inversed() const;
+
+  friend std::ostream& operator<<(std::ostream&, const ModuledBigInt&);
+
+  const BigInteger& get_value() const;
+
+ private:
+  void fix_value();
+
+  BigInteger value;
 };
-
-ModuledBigInt operator+(ModuledBigInt a, ModuledBigInt b) {
-    if (a.value + b.value >= N) {
-        return ModuledBigInt{a.value + b.value - N};
-    } else {
-        return ModuledBigInt{a.value + b.value};
-    }
-}
-
-ModuledBigInt operator-(ModuledBigInt a, ModuledBigInt b) {
-    if (a.value >= b.value) {
-        return ModuledBigInt{a.value - b.value};
-    } else {
-        return ModuledBigInt{N - b.value + a.value};
-    }
-}
-
-ModuledBigInt operator*(const ModuledBigInt& a, ModuledBigInt b) {
-    return ModuledBigInt{(a.value * b.value) % N};
-}
-
-// returns (x, y) such that ax+by=gcd(a,b)
-pair<BigInteger, BigInteger> gcd_extended(BigInteger a, BigInteger b) {
-    if (b == 0) {
-        return make_pair(1, 0);
-    }
-    auto [quotient, remainder] = BigInteger::divide(a, b);
-    cerr << a << ' ' << b << ' ' << quotient << ' ' << remainder << '\n';
-    auto [x1, y1] = gcd_extended(b, remainder);
-    //cerr << a << '*' << y1 << " + " << b << '*' << (x1 - quotient * y1) << '\n';
-    return make_pair(y1, x1 - quotient * y1);
-}
-
-ModuledBigInt GetInverse(const ModuledBigInt& a) {
-    auto [x, y] = gcd_extended(a.value, N);
-    return ModuledBigInt((x % N + N) % N);
-}

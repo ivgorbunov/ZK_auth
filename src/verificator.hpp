@@ -26,14 +26,14 @@ public:
         } else {
             ModuledBigInt Y = message.arr[0];
             ModuledBigInt accum = Y * Y;
-            std::cout << "V: Checking that X is equal to " << Y.value << " * " << Y.value;
+            std::cout << "V: Checking that X is equal to " << Y.get_value() << " * " << Y.get_value();
             for (size_t i = 0; i < k; i++) {
-                if (last_query[i].value) {
+                if (last_query[i].get_value()) {
                     accum *= public_key[i];
-                    std::cout << " * " << public_key[i].value;
+                    std::cout << " * " << public_key[i].get_value();
                 }
             }
-            std::cout << " = " << accum.value << std::endl;
+            std::cout << " = " << accum.get_value() << std::endl;
             bool good = (X == accum) || (X == -accum);
             if (!good) {
                 return {iter + 1, {}, Respond::kFailed};
@@ -52,7 +52,7 @@ public:
         std::vector<long long> ans;
         for (size_t i = 0; i < k; i++) {
             last_query[i] = ModuledBigInt(rnd() % 2);
-            std::cout << last_query[i].value << " ";
+            std::cout << last_query[i].get_value() << " ";
         }
         std::cout << std::endl;
     }

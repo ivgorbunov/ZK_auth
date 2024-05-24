@@ -11,7 +11,7 @@ public:
         std::cout << "P: PRIVATE KEY: ";
         for (size_t i = 0; i < k; i++) {
             s.push_back(GetRandomNumber());
-            std::cout << s.back().value << " ";
+            std::cout << s.back().get_value() << " ";
         }
         std::cout << std::endl << std::endl;
     }
@@ -20,15 +20,15 @@ public:
 
         std::cout << "P: Hello, my public key is: ";
         for (size_t i = 0; i < s.size(); i++) {
-            auto inv = GetInverse(s[i]);
-            std::cout << inv.value << " ";
+            auto inv = s[i].inversed();
+            std::cout << inv.get_value() << " ";
             inv *= inv;
             if (rnd() % 2) {
                 I.push_back(inv);
             } else {
                 I.push_back(-inv);
             }
-            //std::cout << I.back().value << " ";
+            //std::cout << I.back().get_value() << " ";
         }
         std::cout << std::endl;
         return {0, I, Respond::kProver};
@@ -38,18 +38,18 @@ public:
         size_t iter = message.iter;
         if (iter % 2 == 0) {
             R = GetRandomNumber();
-            std::cout << "P: X = " << (R * R).value << std::endl;
+            std::cout << "P: X = " << (R * R).get_value() << std::endl;
             return {iter, {R * R}, Respond::kProver};
         } else {
             ModuledBigInt now = R;
-            std::cout << "P: Y = " << R.value;
+            std::cout << "P: Y = " << R.get_value();
             for (size_t i = 0; i < k; i++) {
-                if (message.arr[i].value == 1) {
+                if (message.arr[i].get_value() == 1) {
                     now *= s[i];
-                    std::cout << " * " << s[i].value;
+                    std::cout << " * " << s[i].get_value();
                 }
             }
-            std::cout << " = " << now.value << std::endl;
+            std::cout << " = " << now.get_value() << std::endl;
             return {iter, {now}, Respond::kProver};
         }
     }

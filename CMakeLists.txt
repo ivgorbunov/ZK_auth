@@ -8,7 +8,8 @@ include_directories(src)
 include_directories(src/util)
 
 set(SOURCE_FILES
-    src/util/bigint.cpp)
+    src/util/bigint.cpp
+    src/util/moduled_bigint.cpp)
 
 add_compile_options(-std=c++20 -Wall -Wextra -Wpedantic -O2)
 
