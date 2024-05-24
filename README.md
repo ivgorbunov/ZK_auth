@@ -2,8 +2,7 @@
 
 This project implements the Feige-Fiat-Shamir identification scheme. This scheme is an Zero-Knowledge Interactive protocol, that makes it a very secure protocol for authentification.
 
-Also the project has an effective implementation of modular BigInteger arithmetics.
-
+The algorithm is based on the assumption that the factorization and modular square root problems are computationaly hard. You can find a more detailed explanation [here](docs/algo.pdf).
 
 ## Build, run and test
 
