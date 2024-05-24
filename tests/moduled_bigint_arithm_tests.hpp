@@ -194,7 +194,6 @@ void check_test_multiple_big_n(Test test) {
   }
 }
 
-
 TEST(ModuledBigIntBigNTests, SimpleTests) {
   check_test_multiple_big_n([]() {
     for (int i = 0; i < 100; ++i) {
@@ -265,7 +264,8 @@ TEST(ModuledBigIntBigNTests, EqTests) {
       ASSERT_EQ(cur, cur);
       ASSERT_EQ(cur, ModuledBigInt(a[i] + ModuledBigInt::N));
       ASSERT_EQ(cur, ModuledBigInt(a[i] + ModuledBigInt::N * ModuledBigInt::N));
-      ASSERT_EQ(ModuledBigInt(a[i] + ModuledBigInt::N * 57), ModuledBigInt(a[i] - ModuledBigInt::N * 179179));
+      ASSERT_EQ(ModuledBigInt(a[i] + ModuledBigInt::N * 57),
+                ModuledBigInt(a[i] - ModuledBigInt::N * 179179));
       // 1 is not a modulo
       ASSERT_TRUE(cur != ModuledBigInt(a[i] + 1));
       ASSERT_FALSE(cur != cur);

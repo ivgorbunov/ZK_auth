@@ -33,16 +33,21 @@ class BigInteger {
   BigInteger& operator*=(const BigInteger&);
   BigInteger& operator/=(const BigInteger&);
   BigInteger& operator%=(const BigInteger&);
+  BigInteger& operator/=(long long);
+  BigInteger& operator%=(long long);
 
   // quotient, remainder
   static std::pair<BigInteger, BigInteger> divide(const BigInteger&,
                                                   const BigInteger&);
+  static std::pair<BigInteger, long long> divide(const BigInteger&, long long);
 
   friend BigInteger operator+(const BigInteger&, const BigInteger&);
   friend BigInteger operator-(const BigInteger&, const BigInteger&);
   friend BigInteger operator*(const BigInteger&, const BigInteger&);
   friend BigInteger operator/(const BigInteger&, const BigInteger&);
   friend BigInteger operator%(const BigInteger&, const BigInteger&);
+  friend BigInteger operator/(const BigInteger&, long long);
+  friend BigInteger operator%(const BigInteger&, long long);
   friend BigInteger operator-(const BigInteger&);
 
   BigInteger& operator++();
@@ -63,6 +68,8 @@ class BigInteger {
   // from least significant to most significant
   std::vector<bool> to_binary() const;
 
+  friend BigInteger random_big_integer(BigInteger, BigInteger);
+
  private:
   void fix_zero_digits();
   static std::strong_ordering compare_digit_groups(
@@ -73,12 +80,14 @@ class BigInteger {
   void add_one_with_sign(bool);
   BigInteger shift_left(size_t) const;
   BigInteger shift_right(size_t) const;
-  
+
   static std::pair<BigInteger, BigInteger> divide32(const BigInteger&,
                                                     const BigInteger&, size_t);
   static std::pair<BigInteger, BigInteger> divide21(const BigInteger&,
                                                     const BigInteger&, size_t);
   static const size_t SMALLDIVIDEDIGITS = 3;
+
+  long long inplace_small_divide(long long);
 
   static std::vector<bool> ll_to_binary(long long);
   static void binary_mul_to(std::vector<bool>&, const std::vector<bool>&);

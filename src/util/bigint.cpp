@@ -423,12 +423,65 @@ BigInteger& BigInteger::operator/=(const BigInteger& other) {
   return *this = (*this / other);
 }
 
+long long BigInteger::inplace_small_divide(long long x) {
+  long long carry = 0;
+  for (size_t i = 0; i < digit_groups.size(); ++i) {
+    size_t real_i = digit_groups.size() - i - 1;
+    long long cur = digit_groups[real_i] + carry * BASE;
+    digit_groups[real_i] = abs(cur / x);
+    carry = cur % x;
+  }
+  return carry;
+}
+
+std::pair<BigInteger, long long> BigInteger::divide(const BigInteger& a, long long x) {
+  bool x_pos = x >= 0;
+  BigInteger copy(a);
+  long long r = copy.inplace_small_divide(x);
+  copy.positive = a.positive == x_pos;
+  copy.fix_zero_digits();
+  if (!a.positive) {
+    r *= -1;
+  }
+  return make_pair(copy, r);
+}
+
+BigInteger& BigInteger::operator/=(long long x) {
+  bool x_pos = x >= 0;
+  inplace_small_divide(x);
+  positive = positive == x_pos;
+  fix_zero_digits();
+  return *this;
+}
+
+BigInteger operator/(const BigInteger& a, long long b) {
+  BigInteger copy(a);
+  copy /= b;
+  return copy;
+}
+
 BigInteger operator%(const BigInteger& a, const BigInteger& b) {
   return BigInteger::divide(a, b).second;
 }
 
+BigInteger operator%(const BigInteger& a, long long b) {
+  long long carry = 0;
+  for (size_t i = 0; i < a.digit_groups.size(); ++i) {
+    size_t real_i = a.digit_groups.size() - i - 1;
+    long long cur = a.digit_groups[real_i] + carry * BigInteger::BASE;
+    carry = cur % b;
+  }
+  return a.positive ? carry : -carry;
+}
+
 BigInteger& BigInteger::operator%=(const BigInteger& other) {
   return *this = (*this % other);
+}
+
+BigInteger& BigInteger::operator%=(long long x) {
+  long long res = inplace_small_divide(x);
+  if (!positive) res *= -1;
+  return (*this = res);
 }
 
 BigInteger operator-(const BigInteger& a) {
