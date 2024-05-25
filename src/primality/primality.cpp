@@ -83,10 +83,21 @@ bool is_prime_effective(const BigInteger& N) {
 
   for (size_t j = 0; j < 30; ++j) {
     if (N % primes[j] == 0) {
-        return false;
+      return false;
     }
   }
 
   // the probability of error ~1/1e6
   return is_prime_miller_rabin_test(N, 20);
+}
+
+BigInteger generate_big_prime(size_t len) {
+  BigInteger start = random_big_integer(1, BigInteger::power(10, len));
+  long long r = start % 4;
+  start += 3 - r;
+  // now start is 4k+3
+  while (!is_prime_effective(start)) {
+    start += 4;
+  }
+  return start;
 }

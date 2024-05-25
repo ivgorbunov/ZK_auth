@@ -20,7 +20,7 @@ TEST(ModuledBigIntSmallNTests, SimpleTests) {
   check_test_multiple_small_n([]() {
     long long n(ModuledBigInt::N);
     for (int i = 0; i < 100; ++i) {
-      long long x = random_value();
+      long long x = test_random_value();
       long long should = x % n;
       if (should < 0) {
         should += n;
@@ -28,7 +28,7 @@ TEST(ModuledBigIntSmallNTests, SimpleTests) {
       ASSERT_EQ(ModuledBigInt(x).get_value(), should);
     }
     for (int i = 0; i < 100; ++i) {
-      BigInteger big_value = random_bigint(100);
+      BigInteger big_value = test_random_bigint(100);
       ModuledBigInt cur = big_value;
       ASSERT_TRUE(0 <= cur.get_value());
       ASSERT_TRUE(cur.get_value() < ModuledBigInt::N);
@@ -55,7 +55,7 @@ TEST(ModuledBigIntSmallNTests, AgreedWithIntOps) {
 TEST(ModuledBigIntSmallNTests, UnaryMinus) {
   check_test_multiple_small_n([]() {
     for (size_t i = 0; i < 20; ++i) {
-      ModuledBigInt a = random_bigint(200);
+      ModuledBigInt a = test_random_bigint(200);
       ModuledBigInt b = -a;
       ModuledBigInt c = -b;
       ModuledBigInt d = -c;
@@ -72,7 +72,7 @@ TEST(ModuledBigIntSmallNTests, EqTests) {
     long long n(ModuledBigInt::N);
     std::vector<long long> a(100);
     for (int i = 0; i < 100; ++i) {
-      a[i] = random_value() % n;
+      a[i] = test_random_value() % n;
       if (a[i] < 0) a[i] += n;
     }
     sort(a.begin(), a.end());
@@ -159,7 +159,7 @@ TEST(ModuledBigIntSmallNTests, InverseTests) {
         }
       }
     } else {
-      long long start = abs(random_value());
+      long long start = abs(test_random_value());
       for (int i = 0; i < 1000; ++i) {
         long long cur = start + i;
         long long g = gcd(cur, n);
@@ -197,7 +197,7 @@ void check_test_multiple_big_n(Test test) {
 TEST(ModuledBigIntBigNTests, SimpleTests) {
   check_test_multiple_big_n([]() {
     for (int i = 0; i < 100; ++i) {
-      BigInteger big_value = random_bigint(100);
+      BigInteger big_value = test_random_bigint(100);
       ModuledBigInt cur = big_value;
       ASSERT_TRUE(0 <= cur.get_value());
       ASSERT_TRUE(cur.get_value() < ModuledBigInt::N);
@@ -224,7 +224,7 @@ TEST(ModuledBigIntBigNTests, AgreedWithBigIntOps) {
 TEST(ModuledBigIntBigNTests, UnaryMinus) {
   check_test_multiple_big_n([]() {
     for (size_t i = 0; i < 20; ++i) {
-      ModuledBigInt a = random_bigint(200);
+      ModuledBigInt a = test_random_bigint(200);
       ModuledBigInt b = -a;
       ModuledBigInt c = -b;
       ModuledBigInt d = -c;
@@ -241,7 +241,7 @@ TEST(ModuledBigIntBigNTests, EqTests) {
     int cnt = 100;
     std::vector<BigInteger> a(cnt);
     for (int i = 0; i < cnt; ++i) {
-      a[i] = random_bigint(100) % ModuledBigInt::N;
+      a[i] = test_random_bigint(100) % ModuledBigInt::N;
     }
     sort(a.begin(), a.end());
     for (size_t i = 0; i + 1 < a.size(); ++i) {
@@ -283,7 +283,7 @@ BigInteger gcd(BigInteger a, BigInteger b) {
 
 TEST(ModuledBigIntBigNTests, InverseTests) {
   check_test_multiple_big_n([]() {
-    BigInteger start = random_bigint(100);
+    BigInteger start = test_random_bigint(100);
     for (int i = 0; i < 100; ++i) {
       BigInteger cur = start + i;
       BigInteger g = gcd(cur, ModuledBigInt::N);

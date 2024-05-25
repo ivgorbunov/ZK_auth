@@ -26,7 +26,7 @@ TEST(BigIntOperatorTests, EqSignedNeq) {
 TEST(BigIntOperatorTests, EqTime) {
   std::vector<BigInteger> testCases;
   for (int i = 0; i < 179; ++i) {
-    testCases.push_back(random_bigint(1000));
+    testCases.push_back(test_random_bigint(1000));
   }
 
   int total_time = 0;
@@ -47,8 +47,8 @@ TEST(BigIntOperatorTests, EqMemory) { CHECK_OPERATOR_ALLOCATIONS(==, 0); }
 
 TEST(BigIntOperatorTests, NeqRandom) {
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    BigInteger first = random_bigint(1000);
-    BigInteger second = random_bigint(1000);
+    BigInteger first = test_random_bigint(1000);
+    BigInteger second = test_random_bigint(1000);
     ASSERT_EQ(first == second, !(first != second));
   }
 }
@@ -116,8 +116,8 @@ TEST(BigIntOperatorTests, SpaceshipTime) {
   int total_time = 0;
   int time_treshold = 1000000;
   for (int i = 0; i < 1000; ++i) {
-    BigInteger a = random_bigint(1e4);
-    BigInteger b = random_bigint(1e4 - 30);
+    BigInteger a = test_random_bigint(1e4);
+    BigInteger b = test_random_bigint(1e4 - 30);
 
     Timer T;
     T.start();

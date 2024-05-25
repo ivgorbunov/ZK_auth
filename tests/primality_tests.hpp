@@ -47,9 +47,22 @@ TEST(PrimalityTests, SmallN) {
 
 TEST(PrimalityTests, NotSoSmallN) {
   for (size_t step = 0; step < 20; ++step) {
-    long long cur = abs(random_value()) + 1;
+    long long cur = abs(test_random_value()) + 1;
     for (size_t cnt = 0; cnt < 100; ++cnt) {
       ASSERT_EQ(is_prime_dumb(cur + cnt), is_prime_effective(cur + cnt));
     }
+  }
+}
+
+TEST(PrimalityTests, BigN) {
+  for (size_t step = 0; step < 10; ++step) {
+    BigInteger cur = test_random_bigint(50);
+    const size_t steps = 400;
+    size_t cnt = 0;
+    while (cnt < steps && !is_prime_effective(cur + cnt)) {
+      ++cnt;
+    }
+    // there are quite a lot of prime numbers out there
+    ASSERT_TRUE(cnt < steps);
   }
 }

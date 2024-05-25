@@ -3,10 +3,10 @@
 #include "bigint.hpp"
 #include "test_helper.hpp"
 
-BigInteger random_bigint(size_t size) {
+BigInteger test_random_bigint(size_t size) {
   string value = "";
   for (size_t i = 0; i < size; ++i) {
-    value += '0' + (abs(random_value()) % 10);
+    value += '0' + (abs(test_random_value()) % 10);
   }
   return BigInteger(value);
 }
@@ -20,8 +20,8 @@ BigInteger random_bigint(size_t size) {
 
 #define TEST_SAME_OPERATOR(testingOp, correctOp) \
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) { \
-    BigInteger first = random_bigint(500);       \
-    BigInteger second = random_bigint(500);      \
+    BigInteger first = test_random_bigint(500);  \
+    BigInteger second = test_random_bigint(500); \
     BigInteger result = first testingOp second;  \
     first correctOp second;                      \
     ASSERT_EQ(first, result);                    \
@@ -29,8 +29,8 @@ BigInteger random_bigint(size_t size) {
 
 #define CHECK_AGREED_WITH_INT(op)                \
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) { \
-    long long a = random_value();                \
-    long long b = random_value();                \
+    long long a = test_random_value();           \
+    long long b = test_random_value();           \
     BigInteger abi = a;                          \
     BigInteger bbi = b;                          \
     ASSERT_EQ(abi op bbi, a op b);               \

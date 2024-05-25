@@ -233,7 +233,7 @@ TEST(BigIntOperatorTests, OutputZero) {
 TEST(BigIntOperatorTests, IORandom) {
   std::stringstream ss;
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    BigInteger a = random_bigint(100);
+    BigInteger a = test_random_bigint(100);
     ss << a << ' ';
     BigInteger b;
     ss >> b;

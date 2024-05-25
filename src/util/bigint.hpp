@@ -47,7 +47,7 @@ class BigInteger {
   friend BigInteger operator/(const BigInteger&, const BigInteger&);
   friend BigInteger operator%(const BigInteger&, const BigInteger&);
   friend BigInteger operator/(const BigInteger&, long long);
-  friend BigInteger operator%(const BigInteger&, long long);
+  friend long long operator%(const BigInteger&, long long);
   friend BigInteger operator-(const BigInteger&);
 
   BigInteger& operator++();
@@ -69,6 +69,8 @@ class BigInteger {
   std::vector<bool> to_binary() const;
 
   friend BigInteger random_big_integer(BigInteger, BigInteger);
+  static BigInteger power(BigInteger, size_t);
+
 
  private:
   void fix_zero_digits();

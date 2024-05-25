@@ -16,7 +16,7 @@ using std::chrono::steady_clock;
 std::mt19937 test_random(1791791791);
 const int RANDOM_TRIES_COUNT = 20;
 
-long long random_value() {
+long long test_random_value() {
   return (test_random() % static_cast<long long>(1e9 + 7));
 }
 

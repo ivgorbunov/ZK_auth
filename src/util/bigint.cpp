@@ -464,7 +464,7 @@ BigInteger operator%(const BigInteger& a, const BigInteger& b) {
   return BigInteger::divide(a, b).second;
 }
 
-BigInteger operator%(const BigInteger& a, long long b) {
+long long operator%(const BigInteger& a, long long b) {
   long long carry = 0;
   for (size_t i = 0; i < a.digit_groups.size(); ++i) {
     size_t real_i = a.digit_groups.size() - i - 1;
@@ -557,4 +557,17 @@ std::vector<bool> BigInteger::to_binary() const {
     binary_mul_to(base_power, base_power);
   }
   return result[0];
+}
+
+BigInteger BigInteger::power(BigInteger a, size_t n) {
+  BigInteger ans = 1;
+  // binary power
+  while (n) {
+    if (n & 1) {
+      ans *= a;
+    }
+    n >>= 1;
+    a *= a;
+  }
+  return ans;
 }

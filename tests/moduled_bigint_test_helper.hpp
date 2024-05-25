@@ -5,8 +5,8 @@
 
 #define TEST_MODULED_SAME_OPERATOR(testingOp, correctOp) \
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {         \
-    BigInteger first = random_bigint(100);               \
-    BigInteger second = random_bigint(100);              \
+    BigInteger first = test_random_bigint(100);          \
+    BigInteger second = test_random_bigint(100);         \
     BigInteger result = first testingOp second;          \
     first correctOp second;                              \
     ASSERT_EQ(first, result);                            \
@@ -14,8 +14,8 @@
 
 #define CHECK_MODULED_AGREED_WITH_INT(op)                                    \
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {                             \
-    long long a = random_value();                                            \
-    long long b = random_value();                                            \
+    long long a = test_random_value();                                       \
+    long long b = test_random_value();                                       \
     long long n(ModuledBigInt::N);                                           \
     ModuledBigInt abi = BigInteger(a);                                       \
     ModuledBigInt bbi = BigInteger(b);                                       \
@@ -24,8 +24,8 @@
 
 #define CHECK_MODULED_AGREED_WITH_BIGINT(op)         \
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {     \
-    BigInteger a = random_bigint(100);               \
-    BigInteger b = random_bigint(100);               \
+    BigInteger a = test_random_bigint(100);          \
+    BigInteger b = test_random_bigint(100);          \
     ModuledBigInt abi = BigInteger(a);               \
     ModuledBigInt bbi = BigInteger(b);               \
     BigInteger should = (a op b) % ModuledBigInt::N; \

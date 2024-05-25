@@ -20,13 +20,13 @@ TEST(BigIntOperatorTests, MultMemory) { CHECK_OPERATOR_ALLOCATIONS(*, 3); }
 TEST(BigIntOperatorTests, DivRandom) { TEST_SAME_OPERATOR(/, /=); }
 
 TEST(BigIntOperatorTests, DivMultRandom) {
-  std::vector<std::pair<int, int>> length_pairs = {{500, 200}, {500, 5},  {100, 50},
-                                              {179, 57},  {57, 179}, {33, 34},
-                                              {33, 33},   {228, 179}};
+  std::vector<std::pair<int, int>> length_pairs = {
+      {500, 200}, {500, 5}, {100, 50}, {179, 57},
+      {57, 179},  {33, 34}, {33, 33},  {228, 179}};
   for (auto [l1, l2] : length_pairs) {
     for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-      BigInteger first = random_bigint(l1);
-      BigInteger second = random_bigint(l2);
+      BigInteger first = test_random_bigint(l1);
+      BigInteger second = test_random_bigint(l2);
       auto [quot, rem] = BigInteger::divide(first, second);
       ASSERT_TRUE(BigInteger(0) <= rem);
       ASSERT_TRUE(rem < second);
@@ -39,8 +39,8 @@ TEST(BigIntOperatorTests, DivMultLLRandom) {
   std::vector<int> lengths = {1, 2, 3, 7, 11, 179, 57, 555, 719};
   for (auto l : lengths) {
     for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-      BigInteger first = random_bigint(l);
-      long long second = i == 0 ? 1 : abs(random_value()) + 1;
+      BigInteger first = test_random_bigint(l);
+      long long second = i == 0 ? 1 : abs(test_random_value()) + 1;
       auto quot = first / second;
       auto rem = first % second;
       ASSERT_TRUE(BigInteger(0) <= rem);
@@ -50,13 +50,12 @@ TEST(BigIntOperatorTests, DivMultLLRandom) {
   }
 }
 
-
 TEST(BigIntOperatorTests, DivMultLLRandom2) {
   std::vector<int> lengths = {1, 2, 3, 7, 11, 179, 57, 555, 719};
   for (auto l : lengths) {
     for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-      BigInteger first = random_bigint(l);
-      long long second = i == 0 ? 1 : abs(random_value()) + 1;
+      BigInteger first = test_random_bigint(l);
+      long long second = i == 0 ? 1 : abs(test_random_value()) + 1;
       auto [quot, rem] = BigInteger::divide(first, second);
       ASSERT_TRUE(BigInteger(0) <= rem);
       ASSERT_TRUE(rem < second);
@@ -114,8 +113,8 @@ TEST(BigIntOperatorTests, PlusEQPosNegOverflow) {
 
 TEST(BigIntOperatorTests, PlusEQRandom) {
   for (auto i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    long long first = random_value();
-    long long second = random_value();
+    long long first = test_random_value();
+    long long second = test_random_value();
     BigInteger a = first;
     a += second;
     ASSERT_EQ(first + second, a);
@@ -126,8 +125,8 @@ TEST(BigIntOperatorTests, PlusEQTime) {
   int total_time = 0;
   int time_treshold = 1000000;
   for (int i = 0; i < 2000; ++i) {
-    BigInteger first = random_bigint(1e4);
-    BigInteger second = random_bigint(1e4);
+    BigInteger first = test_random_bigint(1e4);
+    BigInteger second = test_random_bigint(1e4);
     Timer T;
     T.start();
     first += second;
@@ -150,8 +149,8 @@ TEST(BigIntOperatorTests, MinusEQ) {
 
 TEST(BigIntOperatorTests, MinusEQRandom) {
   for (auto i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    long long first = random_value();
-    long long second = random_value();
+    long long first = test_random_value();
+    long long second = test_random_value();
     BigInteger a = first;
     a -= second;
     ASSERT_EQ(first - second, a);
@@ -181,7 +180,7 @@ TEST(BigIntOperatorTests, TimesEQZeroNeg) { test_mult(-1791791791, 0); }
 
 TEST(BigIntOperatorTests, TimesEQRandom) {
   for (auto i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    test_mult(random_value(), random_value());
+    test_mult(test_random_value(), test_random_value());
   }
 }
 
@@ -190,8 +189,8 @@ TEST(BigIntOperatorTests, TimesEQTime) {
   int time_treshold = 3000;
 
   for (int i = 0; i < 100; ++i) {
-    auto first = random_bigint(1e4);
-    auto second = random_bigint(1e4);
+    auto first = test_random_bigint(1e4);
+    auto second = test_random_bigint(1e4);
     Timer T;
     T.start();
     first *= second;
@@ -220,9 +219,9 @@ TEST(BigIntOperatorTests, DivNegNeg) { test_division(-179, -57); }
 
 TEST(BigIntOperatorTests, DivEqRandom) {
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    auto left = random_value();
+    auto left = test_random_value();
     auto right = 0;
-    while (right == 0) right = random_value();
+    while (right == 0) right = test_random_value();
     test_division(left, right);
   }
 }
@@ -232,8 +231,8 @@ TEST(BigIntOperatorTests, DivTime) {
   int time_treshold = 2000;
 
   for (int i = 0; i < 100; ++i) {
-    auto first = random_bigint(5e2);
-    auto second = random_bigint(5e2);
+    auto first = test_random_bigint(5e2);
+    auto second = test_random_bigint(5e2);
     Timer T;
     T.start();
     first /= second;
@@ -262,9 +261,9 @@ TEST(BigIntOperatorTests, ModNegNeg) { test_modulus(-179, -179); }
 
 TEST(BigIntOperatorTests, ModEqRandom) {
   for (int i = 0; i < RANDOM_TRIES_COUNT; ++i) {
-    long long left = random_value();
+    long long left = test_random_value();
     long long right = 0;
-    while (right == 0) right = random_value();
+    while (right == 0) right = test_random_value();
 
     test_modulus(left, right);
   }
@@ -275,8 +274,8 @@ TEST(BigIntOperatorTests, ModEqTime) {
   int time_treshold = 2000;
 
   for (int i = 0; i < 100; ++i) {
-    auto first = random_bigint(5e2);
-    auto second = random_bigint(5e2);
+    auto first = test_random_bigint(5e2);
+    auto second = test_random_bigint(5e2);
     Timer T;
     T.start();
     first %= second;
@@ -318,7 +317,7 @@ TEST(BigIntOperatorTests, LPPlusTime) {
 
   for (int i = 0; i < 10000; ++i) {
     Timer T;
-    BigInteger first = random_bigint(9);
+    BigInteger first = test_random_bigint(9);
     T.start();
 
     for (int j = 0; j < 1e3; ++j) {
@@ -393,7 +392,7 @@ TEST(BigIntOperatorTests, LMMinusTime) {
 
   for (int i = 0; i < 100; ++i) {
     Timer T;
-    BigInteger first = random_bigint(1e2);
+    BigInteger first = test_random_bigint(1e2);
     T.start();
 
     for (int j = 0; j < 1e5; ++j) {
@@ -445,7 +444,7 @@ TEST(BigIntOperatorTests, UnaryMinus) {
     ASSERT_EQ(b, -i);
   }
   for (int i = 0; i < 10; ++i) {
-    BigInteger a = random_bigint(500);
+    BigInteger a = test_random_bigint(500);
     BigInteger b = -a;
     BigInteger c = -b;
     BigInteger d = -c;
@@ -455,77 +454,67 @@ TEST(BigIntOperatorTests, UnaryMinus) {
   }
 }
 
-/*
 TEST(BigIntMethodTests, Power) {
-    BigInteger a = BigInteger::power(2, 6);
-    ASSERT_EQ(a, 64);
+  BigInteger a = BigInteger::power(2, 6);
+  ASSERT_EQ(a, 64);
 }
 
 TEST(BigIntMethodTests, PowerZero) {
-    BigInteger a = BigInteger::power(2, 0);
-    ASSERT_EQ(1, a);
+  BigInteger a = BigInteger::power(2, 0);
+  ASSERT_EQ(1, a);
 }
 
 TEST(BigIntMethodTests, PowerBig) {
-    BigInteger a = BigInteger::power(2, 16);
-    ASSERT_EQ(65536, a);
+  BigInteger a = BigInteger::power(2, 16);
+  ASSERT_EQ(65536, a);
 }
 
 TEST(BigIntMethodTests, PowerOne) {
-    BigInteger a = BigInteger::power(1, 1791791791);
-    ASSERT_EQ(1, a);
+  BigInteger a = BigInteger::power(1, 1791791791);
+  ASSERT_EQ(1, a);
 }
 
 TEST(BigIntMethodTests, NegPower) {
-    BigInteger a = BigInteger::power(-2, 5);
-    ASSERT_EQ(-32, a);
+  BigInteger a = BigInteger::power(-2, 5);
+  ASSERT_EQ(-32, a);
 }
 
 TEST(BigIntMethodTests, NegEvenPower) {
-    BigInteger a = BigInteger::power(-2, 8);
-    ASSERT_EQ(256, a);
+  BigInteger a = BigInteger::power(-2, 8);
+  ASSERT_EQ(256, a);
 }
 
 TEST(BigIntMethodTests, ZeroPower) {
-    BigInteger a = BigInteger::power(0, 1791791791);
-    ASSERT_EQ(0, a);
+  BigInteger a = BigInteger::power(0, 1791791791);
+  ASSERT_EQ(0, a);
+}
+
+TEST(BigIntMethodTests, PowerSameAsMult) {
+  for (size_t i = 0; i < 20; ++i) {
+    BigInteger a = test_random_bigint(20);
+    size_t n = abs(test_random_value()) % 10;
+    BigInteger should = 1;
+    for (size_t j = 0; j < n; ++j) {
+      should *= a;
+    }
+    ASSERT_EQ(should, BigInteger::power(a, n));
+  }
 }
 
 TEST(BigIntMethodTests, PowerTime) {
-    int time_treshold = 2500;
-    int total_time = 0;
+  int time_treshold = 2500;
+  int total_time = 0;
 
-    for (size_t i = 0; i < 100; ++i) {
-        Timer T;
-        T.start();
-        BigInteger::power(random_bigint(3), random_bigint(3));
-        T.finish();
-        total_time += T.get_time_milliseconds();
+  for (size_t i = 0; i < 100; ++i) {
+    Timer T;
+    T.start();
+    BigInteger::power(test_random_bigint(3), 179);
+    T.finish();
+    total_time += T.get_time_milliseconds();
 
-        ASSERT_LE(total_time, time_treshold) << i << " iteration of 100";
-    }
+    ASSERT_LE(total_time, time_treshold) << i << " iteration of 100";
+  }
 }
-
-TEST(BigIntMethodTests, Size) {
-    BigInteger a = 179;
-
-    ASSERT_EQ(3, a.size());
-}
-
-TEST(BigIntMethodTests, SizeNegative) {
-    BigInteger a = -19;
-    ASSERT_EQ(2, a.size());
-}
-
-TEST(BigIntMethodTests, SizeBig) {
-    BigInteger a = random_bigint(100'000);
-    ASSERT_EQ(100'000, a.size());
-}
-
-TEST(BigIntMethodTests, SizeZero) {
-    BigInteger a = 0;
-    ASSERT_EQ(1, a.size());
-}*/
 
 TEST(BigIntMethodTests, IsZeroPositive) {
   BigInteger a = 179;
@@ -570,7 +559,7 @@ TEST(BigIntMethodTests, IsNegativeAfterSum) {
 
 TEST(BigIntOperatorTests, OperatorsToItself) {
   for (int i = 0; i < 20; ++i) {
-    BigInteger x = random_bigint(100 + i);
+    BigInteger x = test_random_bigint(100 + i);
     BigInteger a = x;
     a += a;
     ASSERT_EQ(a, x + x);
@@ -589,66 +578,6 @@ TEST(BigIntOperatorTests, OperatorsToItself) {
   }
 }
 
-/*
-TEST(BigIntMethodTests, InvertSignPositive) {
-    BigInteger a = 179;
-    a.invert_sign();
-    ASSERT_EQ(-179, a);
-}
-
-TEST(BigIntMethodTests, InvertSignNegative) {
-    BigInteger a = -179;
-    a.invert_sign();
-    ASSERT_EQ(179, a);
-}
-
-TEST(BigIntMethodTests, InvertSignZero) {
-    BigInteger a = 0;
-    a.invert_sign();
-    ASSERT_EQ(0, a);
-    ASSERT_FALSE(a.is_negative());
-}
-
-TEST(BigIntMethodTests, Shift) {
-    BigInteger a = 179;
-    a.shift(1);
-    ASSERT_EQ(1790, a);
-}
-
-TEST(BigIntMethodTests, ShiftZero) {
-    BigInteger a = 179;
-    a.shift(0);
-    ASSERT_EQ(179, a);
-}
-
-TEST(BigIntMethodTests, ShiftNegative) {
-    BigInteger a = -179;
-    a.shift(2);
-    ASSERT_EQ(-17900, a);
-}
-
-TEST(BigIntMethodTests, ShiftZeroValue) {
-    BigInteger a = 0;
-    a.shift(30);
-    ASSERT_EQ(0, a);
-    ASSERT_EQ("0", a.toString());
-}
-
-TEST(BigIntMethodTests, ShiftTime) {
-    int total_time = 0;
-    int time_treshold = 1000;
-    for (size_t i = 0; i < 100; ++i) {
-        BigInteger a = random_bigint(100'000);
-        Timer T;
-        T.start();
-        a.shift(100'000);
-        T.finish();
-        total_time += T.get_time_milliseconds();
-        ASSERT_LE(total_time, time_treshold);
-    }
-}
-*/
-
 TEST(BigIntMethodTests, ToBinaryTest) {
   for (int small = 0; small <= 1024; ++small) {
     int copy = small;
@@ -660,7 +589,7 @@ TEST(BigIntMethodTests, ToBinaryTest) {
     ASSERT_EQ(should, BigInteger(small).to_binary());
   }
   for (int i = 0; i < 100; ++i) {
-    long long cur = random_value();
+    long long cur = test_random_value();
     long long copy = abs(cur);
     vector<bool> should;
     while (copy) {
@@ -672,7 +601,7 @@ TEST(BigIntMethodTests, ToBinaryTest) {
   for (int i = 0; i < 20; ++i) {
     int len = 179 + i * 57;
     vector<bool> should(len);
-    for (int j = 0; j < len; ++j) should[j] = random_value() % 2;
+    for (int j = 0; j < len; ++j) should[j] = test_random_value() % 2;
     should.emplace_back(1);
     BigInteger value = 0;
     for (int j = 0; j <= len; ++j) {
